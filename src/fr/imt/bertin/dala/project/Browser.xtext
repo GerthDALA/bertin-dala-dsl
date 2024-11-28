@@ -1,0 +1,61 @@
+grammar fr.imt.bertin.dala.project.Browser with org.eclipse.xtext.common.Terminals
+
+generate browser "http://www.imt.fr/bertin/dala/project/Browser"
+
+Model:
+    statements+=Statement*;
+
+Statement:
+    OpenUrl 
+    | ClickLink 
+    | ClickImage 
+    | VerifyLink 
+    | FillText 
+    | ClickButton 
+    | VerifyText
+    | SelectOption 
+    | UncheckAllCheckboxes 
+    | CheckCheckboxes 
+    | SaveLink;
+
+OpenUrl:
+    'OPEN_URL' url=STRING;
+
+ClickLink:
+    'CLICK_LINK' linkText=STRING;
+
+ClickImage:
+    'CLICK_IMAGE' altText=STRING;
+
+VerifyLink:
+    'VERIFY_LINK' texts+=TextPart (',' texts+=TextPart)*;
+
+FillText:
+    'FILL_TEXT' text=TextPart 'INTO' field=STRING;
+
+ClickButton:
+    'CLICK_BUTTON' buttonText=STRING;
+
+VerifyText:
+    'VERIFY_TEXT' texts+=TextPart (',' texts+=TextPart)*;
+    
+SelectOption:
+    'SELECT_OPTION' linkText=STRING;
+
+UncheckAllCheckboxes:
+    'UNCHECK_ALL_CHECKBOXES';
+
+CheckCheckboxes:
+    'CHECK_CHECKBOXES' '[' items+=STRING (',' items+=STRING)* ']';
+
+SaveLink:
+    'SAVE_LINK' index=INT 'INTO' container=STRING;
+
+TextPart:
+    StringLiteral | VariableReference;
+
+StringLiteral:
+    value=STRING;
+
+VariableReference:
+    name=ID;
